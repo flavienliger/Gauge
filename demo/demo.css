@@ -26,10 +26,6 @@ body {
 }
 
 /* Custom pointer */
-.second .pointer {
-    background: none;
-}
-
 .second .pointer div.line{
     height: 90px;
     width: 8px;

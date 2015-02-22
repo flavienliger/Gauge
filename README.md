@@ -164,6 +164,8 @@ Create basic Gauge :
 
 - Add class "arrow" for triangle
 
+![Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/special.jpg)
+
 - You can make you're own pointer
     ```html
     <!-- html -->
@@ -179,10 +181,6 @@ Create basic Gauge :
     
     ```css
     /* css */
-    
-    .gauge .pointer {
-        background: none;
-    }
 
     .gauge .pointer div.line{
         height: 90px;
@@ -206,6 +204,22 @@ Create basic Gauge :
         border-left: 4px solid transparent;
         border-right: 4px solid transparent;
     }
+    ```
+    
+    ```js
+    new Gauge('.obj', {
+        width: 170,
+        height: 170,
+        pointer: { 
+            width: 5, 
+            height: 65,
+            color: 'none' 
+        },
+        pivot: { 
+            width: 12, 
+            height: 12 
+        }
+    });
     ```
     
 # TODO
