@@ -56,7 +56,7 @@ Create basic Gauge :
     ```
     
 - JS - update pointer
--   ```js
+    ```js
     // value = input min/max
     myPointer.update(value);
     ```
