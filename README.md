@@ -161,12 +161,14 @@ Create basic Gauge :
 ## Special Pointer
 
 - Default pointer is a line
+    ![Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/line.jpg)
 
 - Add class "arrow" for triangle
-
-![Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/special.jpg)
+    ![Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/arrow.jpg)
 
 - You can make you're own pointer
+    ![Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/special.jpg)
+
     ```html
     <!-- html -->
     
