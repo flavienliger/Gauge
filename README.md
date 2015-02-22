@@ -90,7 +90,7 @@ Create basic Gauge :
         speed: transition in second (default 0.1)
         
         inp: {
-            actual
+            start
             min
             max
         }
@@ -106,14 +106,17 @@ Create basic Gauge :
 
 - Gauge
     ```js
-    new Gauge(obj, option);
+    var myGauge = new Gauge(obj, option);
     ```
     
 - Pointer
     ```js
-    new Pointer(obj, option);
+    var ptr = new Pointer(obj, option);
     // equivalent
-    myGauge.setPointer(option);
+    var ptr = myGauge.setPointer(option);
+    
+    // update
+    ptr.update(valInput);
     ```
     
 - "obj" possibility :
