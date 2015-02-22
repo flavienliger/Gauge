@@ -13,7 +13,7 @@ Create basic Gauge :
 ![Full gauge] (https://github.com/flavienliger/Gauge/raw/master/images/start.jpg)
 
 - HTML
-    ```
+    ```html
     <div id="myGauge">
         <!-- pointer -->
         <div class="pointer arrow"></div>
@@ -23,7 +23,7 @@ Create basic Gauge :
     ```
     
 - JS - make gauge
-    ```
+    ```js
     var myGauge = new Gauge('#myGauge', {
         width: 100, 
         height: 100, 
@@ -39,7 +39,7 @@ Create basic Gauge :
     ```
     
 - JS - animate pointer
-    ```
+    ```js
     var myPointer = myGauge.setPointer({
         // input range (ex; for a hour of needle clock, min = 0, max = 12)
         input: {
@@ -56,8 +56,10 @@ Create basic Gauge :
     ```
     
 - JS - update pointer
+-   ```js
     // value = input min/max
     myPointer.update(value);
+    ```
     
 ## Option
 
@@ -103,19 +105,19 @@ Create basic Gauge :
 ## Start
 
 - Gauge
-    ```
+    ```js
     new Gauge(obj, option);
     ```
     
 - Pointer
-    ```
+    ```js
     new Pointer(obj, option);
     // equivalent
     myGauge.setPointer(option);
     ```
     
 - "obj" possibility :
-    ```
+    ```js
     // String
     obj = '.class';
     obj = '#id';
@@ -132,7 +134,7 @@ Create basic Gauge :
 ![Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/half.jpg)
 
 - Half gauge
-    ```
+    ```js
     new Gauge('#left', {
         width: 50, 
         height: 100, 
@@ -145,7 +147,7 @@ Create basic Gauge :
     ```
     
 - Full gauge
-    ```
+    ```js
     new Gauge('.full-clock', {
         width: 100, 
         height: 100, 
@@ -163,7 +165,7 @@ Create basic Gauge :
 - Add class "arrow" for triangle
 
 - You can make you're own pointer
-    ```
+    ```html
     <!-- html -->
     
     <div class="gauge">
@@ -175,7 +177,7 @@ Create basic Gauge :
     </div>
     ```
     
-    ```
+    ```css
     /* css */
     
     .gauge .pointer {
