@@ -4,23 +4,26 @@
 - Use Transition / Transform
 - Compatible IE10+, Chrome, Firefox
 
-[Image of Introduction] (https://github.com/flavienliger/Gauge/raw/master/images/intro.jpg)
+![Image of Introduction] (https://github.com/flavienliger/Gauge/raw/master/images/intro.jpg)
 
 # Get Started
 
 Create basic Gauge :
 
-[Full gauge] (https://github.com/flavienliger/Gauge/raw/master/images/start.jpg)
+![Full gauge] (https://github.com/flavienliger/Gauge/raw/master/images/start.jpg)
 
 - HTML
+    ```
     <div id="myGauge">
         <!-- pointer -->
         <div class="pointer arrow"></div>
         <!-- circle in center -->
         <div class="pivot"></div>
     </div>
+    ```
     
 - JS - make gauge
+    ```
     var myGauge = new Gauge('#myGauge', {
         width: 100, 
         height: 100, 
@@ -33,7 +36,10 @@ Create basic Gauge :
             height: 10 
         }
     });
+    ```
+    
 - JS - animate pointer
+    ```
     var myPointer = myGauge.setPointer({
         // input range (ex; for a hour of needle clock, min = 0, max = 12)
         input: {
@@ -47,6 +53,7 @@ Create basic Gauge :
             max: 360
         }
     });
+    ```
     
 - JS - update pointer
     // value = input min/max
@@ -55,6 +62,7 @@ Create basic Gauge :
 ## Option
 
 - Gauge
+    ```
     {
         width
         height
@@ -72,8 +80,10 @@ Create basic Gauge :
             color
         }
     }
+    ```
 
 - Pointer
+    ```
     {
         speed: transition in second (default 0.1)
         
@@ -88,18 +98,24 @@ Create basic Gauge :
             max
         }
     }
+    ```
     
 ## Start
 
 - Gauge
+    ```
     new Gauge(obj, option);
+    ```
     
 - Pointer
+    ```
     new Pointer(obj, option);
     // equivalent
     myGauge.setPointer(option);
+    ```
     
 - "obj" possibility :
+    ```
     // String
     obj = '.class';
     obj = '#id';
@@ -109,12 +125,14 @@ Create basic Gauge :
     
     // DOM
     obj = document.querySelector('#id');
+    ```
 
 ## Half and Full gauge
 
-[Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/half.jpg)
+![Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/half.jpg)
 
 - Half gauge
+    ```
     new Gauge('#left', {
         width: 50, 
         height: 100, 
@@ -124,8 +142,10 @@ Create basic Gauge :
             height: 40 
         }
     });
+    ```
     
 - Full gauge
+    ```
     new Gauge('.full-clock', {
         width: 100, 
         height: 100, 
@@ -134,6 +154,7 @@ Create basic Gauge :
             height: 40 
         }
     });
+    ```
 
 ## Special Pointer
 
@@ -142,6 +163,9 @@ Create basic Gauge :
 - Add class "arrow" for triangle
 
 - You can make you're own pointer
+    ```
+    <!-- html -->
+    
     <div class="gauge">
         <div class="pointer">
             <div class="arrow"></div>
@@ -149,8 +173,11 @@ Create basic Gauge :
         </div>
         <div class="pivot"></div>
     </div>
+    ```
     
-    <style>
+    ```
+    /* css */
+    
     .gauge .pointer {
         background: none;
     }
@@ -177,7 +204,7 @@ Create basic Gauge :
         border-left: 4px solid transparent;
         border-right: 4px solid transparent;
     }
-    </style>
+    ```
     
 # TODO
 
