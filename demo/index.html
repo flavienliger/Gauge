@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Half and full clock</title>
+    <meta name="viewport" content="initial-scale=0.5, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <div class="content">
+        <div id="left" class="half-clock">
+            <div class="pointer arrow"></div>
+            <div class="pivot"></div>
+        </div>
+
+        <div id="top" class="half-clock">
+            <div class="pointer arrow"></div>
+            <div class="pivot"></div>
+        </div>
+
+        <div id="bottom" class="half-clock">
+            <div class="pointer arrow"></div>
+            <div class="pivot"></div>
+        </div>
+
+        <div id="right" class="half-clock">
+            <div class="pointer arrow"></div>
+            <div class="pivot"></div>
+        </div>
+
+        <div class="full-clock">
+            <div class="pointer arrow"></div>
+            <div class="pivot"></div>
+        </div>
+    </div>
+    
+    <script src="../gauge.js"></script>
+    
+    <script>
+        var clock = {};
+
+        clock.top = new Gauge('#top', {
+            width: 100, 
+            height: 50, 
+            pointer: { origin: 'top', width: 3, height: 40 }, 
+            pivot: { width: 10, height: 10 }
+        }).setPointer({
+            speed: 0.5
+        });
+
+        clock.left = new Gauge('#left', {
+            width: 50, 
+            height: 100, 
+            pointer: { origin: 'left', width: 3, height: 40 }, 
+            pivot: { width: 10, height: 10 }
+        }).setPointer({
+            speed: 0.5
+        });
+
+        clock.right = new Gauge('#right', {
+            width: 50, 
+            height: 100, 
+            pointer: { origin: 'right', width: 3, height: 40 }, 
+            pivot: { width: 10, height: 10 }
+        }).setPointer({
+            speed: 0.5
+        });
+
+        clock.bottom = new Gauge('#bottom', {
+            width: 100, 
+            height: 50, 
+            pointer: { origin: 'bottom', width: 3, height: 40 }, 
+            pivot: { width: 10, height: 10 }
+        }).setPointer({
+            speed: 0.5
+        });
+
+        var fullClock = new Gauge('.full-clock', {
+            width: 200, 
+            height: 200, 
+            pointer: { width: 5, height: 100 }, 
+            pivot: { width: 20, height: 20 }
+        }).setPointer({
+            speed: 0.5
+        });
+
+        var random = function(nMin,nMax){
+            return Math.floor(nMin + (nMax+1-nMin)*Math.random());
+        };
+        
+        var setRandom = function(obj){
+            for(var key in obj){
+                obj[key].update(random(0,100));
+            }
+
+            setTimeout(function(){
+                setRandom(obj);
+            }, random(500,1000));
+        };
+
+        var setInc = function(obj, prev){
+            var prev = (typeof prev === 'undefined' || prev>100 || prev<0) ? 0: prev;
+            var sens = random(0,1)==0?1:-1;
+            prev += random(0,10)*sens;
+
+            obj.update(prev);
+
+            setTimeout(function(){
+                setInc(obj, prev);
+            }, random(500,1000));
+        };
+
+        // random animation
+        setRandom(clock);
+        setInc(fullClock);
+    </script>
+</body>
+</html>

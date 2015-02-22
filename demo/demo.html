@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Flight director</title>
+    <link href="http://lieo.fr/favicon.ico#" rel="shortcut icon" type="image/x-icon">
+    <meta name="viewport" content="initial-scale=0.5, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="demo.css">
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+</head>
+<body>
+    <div class="content">
+        <div class="main full-clock">
+            <div class="pointer arrow"></div>
+            <div class="pivot"></div>
+        </div>
+
+        <div class="second">
+            <div class="pointer">
+                <div class="arrow"></div>
+                <div class="line"></div>
+            </div>
+            <div class="pivot"></div>
+        </div>
+
+    
+        <div class="third">
+            <div class="pointer arrow"></div>
+            <div class="pivot"></div>
+        </div>
+    
+    </div>
+    
+    <script src="../gauge.js"></script>
+    
+    <script>
+    
+        var main = new Gauge($('.main'), {
+            width: 500, 
+            height: 500, 
+            pointer: { width: 16, height: 200 }, 
+            pivot: { width: 40, height: 40 }
+        })
+        .setPointer({
+            speed: 0.5,
+    //        input: {
+    //            min: 15,
+    //            max: -15,
+    //            start: 15
+    //        },
+            output: {
+                min: -20,
+                max: 200
+            }
+        });
+
+        var second = new Gauge(document.querySelector('.second'), {
+            width: 170,
+            height: 170,
+            pointer: { width: 5, height: 65 },
+            pivot: { width: 12, height: 12 }
+        })
+         .setPointer({
+            speed: 2,
+    //        input: {
+    //            min: 0,
+    //            max: 270
+    //        },
+            output: {
+                min: 90,
+                max: 360
+            }
+        });
+
+        var third = new Gauge('.third', {
+            width: 200,
+            height: 200,
+            pointer: { width: 2, height: 75 },
+            pivot: { width: 8, height: 8 }
+        })
+         .setPointer({
+    //        input: {
+    //            min: 0,
+    //            max: 7
+    //        },
+            output: {
+                min: 60,
+                max: 120
+            }
+        });
+        
+        var random = function(nMin,nMax){
+            return Math.floor(nMin + (nMax+1-nMin)*Math.random());
+        };
+        
+        var setRandom = function(obj){
+            obj.update(random(0,100));
+
+            setTimeout(function(){
+                setRandom(obj);
+            }, random(500,1000));
+        };
+
+        var setInc = function(obj, prev){
+            var prev = (typeof prev === 'undefined' || prev>100 || prev<0) ? 0: prev;
+            var sens = random(0,1)==0?1:-1;
+            prev += random(0,10)*sens;
+
+            obj.update(prev);
+
+            setTimeout(function(){
+                setInc(obj, prev);
+            }, 500);
+        };
+
+        // random animation
+        setRandom(second);
+        setRandom(third);
+        setInc(main);
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+body {
+    background: #1a1a1a;
+}
+
+.content {
+    width: 330px;
+    height: 330px;
+    margin: 0 auto;
+    margin-top: 200px;
+    position: relative;
+    border: 1px solid grey; 
+}
+
+.half-clock {
+    background: #282828;
+    border: 2px solid #7e7e7e;
+    position: absolute;
+}
+
+.full-clock {
+    background: #282828;
+    border: 2px solid #7e7e7e;
+    position: relative;
+    margin: 0 auto;
+    top: 60px;
+}
+
+#top {
+    left: 50%;
+    margin-left: -50px;
+}
+
+#left {
+    left: 0px;
+    top: 50%;
+    margin-top: -50px;
+}
+
+#right {
+    left: 100%;
+    margin-left: -53px;
+    top: 50%;
+    margin-top: -50px;
+}
+
+#bottom {
+    top: 100%;
+    margin-top: -55px;
+    left: 50%;
+    margin-left: -50px;
+}
