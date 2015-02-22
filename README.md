@@ -131,9 +131,10 @@ Create basic Gauge :
 
 ## Half and Full gauge
 
-![Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/half.jpg)
-
 - Half gauge
+ 
+    ![Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/half.jpg)
+
     ```js
     new Gauge('#left', {
         width: 50, 
@@ -162,15 +163,15 @@ Create basic Gauge :
 
 - Default pointer is a line
 
-![Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/line.jpg)
+    ![Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/line.jpg)
 
 - Add class "arrow" for triangle
 
-![Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/arrow.jpg)
+    ![Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/arrow.jpg)
 
 - You can make you're own pointer
 
-![Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/special.jpg)
+    ![Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/special.jpg)
 
     ```html
     <!-- html -->
