@@ -349,8 +349,8 @@
                     end: pF(opt.angle.end)||360
                 },
                 unit: {
-                    min: typeof opt.unit.min !== 'undefined'? pF(opt.unit.min):0,
-                    max: typeof opt.unit.max !== 'undefined'? pF(opt.unit.max):10,
+                    start: typeof opt.unit.start !== 'undefined'? pF(opt.unit.start):0,
+                    end: typeof opt.unit.end !== 'undefined'? pF(opt.unit.end):10,
                     repeat: typeof opt.unit.repeat !== 'undefined'? parseInt(opt.unit.repeat): 9,
                     font: 'arial',
                     size: pF(opt.unit.size)||12
@@ -396,22 +396,30 @@
             parent.style.left = 0;
             parent.style.color = 'white';
             
-            var start = option.angle.start+180;
             var child;
-            var rangeAngle = option.angle.start - option.angle.end;
-            var angle = Math.abs(rangeAngle/(option.main.repeat-1));
+            
+            var startAngle = option.angle.start+180;
+            var rangeAngle = Math.abs(option.angle.start - option.angle.end);
+            var repeat = option.unit.repeat + (rangeAngle == 360? 0: -1);
+            var angle = rangeAngle/repeat;
+            
+            var startUnit = option.unit.start;
+            var rangeUnit = Math.abs(option.unit.start - option.unit.end);
+            var unit = rangeUnit/(option.unit.repeat-1);
             
             for(var i=0; i<option.unit.repeat; i++){
                 child = document.createElement('p');
                 child.style.position = 'absolute';
                 child.style.margin = 0;
-                child.style.left = (option.width/2 * Math.cos(degreeToRadian(start)) + option.width/2) + 'px';
-                child.style.top =  (option.height/2 * Math.sin(degreeToRadian(start)) + option.height/2) + 'px';
+                child.style.fontSize = option.unit.size;
+                child.style.left = (option.width/2 * Math.cos(degreeToRadian(startAngle)) + option.width/2) + 'px';
+                child.style.top =  (option.height/2 * Math.sin(degreeToRadian(startAngle)) + option.height/2) + 'px';
                 
-                child.innerHTML = 'TEST';
-                
+                child.innerHTML = startUnit;
+                startUnit += (roundNumber(unit, 3)*(option.unit.start>option.unit.end?-1:1));
+                console.log('angle', startAngle, Math.cos(degreeToRadian(startAngle)), Math.sin(degreeToRadian(startAngle)));
                 parent.appendChild(child);
-                start += angle;
+                startAngle += angle;
             }
             
             $obj.appendChild(parent);

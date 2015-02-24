@@ -137,6 +137,19 @@ var getObj = function(inp){
     return obj;
 };
 
+/**
+* Return round number with offset
+* @param {Number} n original number
+* @param {Number} o offset
+* @returns {Number}
+*/
+var roundNumber = function(n, o){
+    var offset = Math.pow(10, o);
+    n *= offset;
+    n = Math.round(n)/offset;
+    return n;
+}
+
 // not used
 var hasStyle = function(obj, property){
     return window.getComputedStyle(obj, null).getPropertyValue(property);  
