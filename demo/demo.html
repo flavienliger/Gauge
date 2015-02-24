@@ -7,7 +7,6 @@
     <link href="http://lieo.fr/favicon.ico#" rel="shortcut icon" type="image/x-icon">
     <meta name="viewport" content="initial-scale=0.5, maximum-scale=1.0">
     <link rel="stylesheet" type="text/css" href="demo.css">
-    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 </head>
 <body>
     <div class="content">
@@ -32,11 +31,77 @@
     
     </div>
     
-    <script src="../gauge.js"></script>
+<!--    <script src="../gauge.js"></script>-->
+    <script src="../src/gauge.js"></script>
+    <script src="../src/tools.js"></script>
     
     <script>
-    
-        var main = new Gauge($('.main'), {
+        
+        new Measure('.main', {
+            width: 500,
+            height: 500,
+            main: {
+                repeat: 7,
+                width: 5,
+                marge: 30
+            },
+            second: {
+                repeat: 9,
+                width: 2,
+                marge: 40
+            },
+            angle: {
+                start: -20,
+                end: 200
+            },
+            unit: {
+                repeat: 7   
+            }
+        });
+        
+        new Measure('.second', {
+            width: 170,
+            height: 170,
+            main: {
+                repeat: 9,
+                width: 3,
+                height: 12,
+                marge: 10
+            },
+            second: {
+                repeat: 9,
+                width: 1,
+                height: 8,
+                marge: 10
+            },
+            unit: {
+                repeat: 0   
+            }
+        });
+        
+        new Measure('.third', {
+            width: 200,
+            height: 200,
+            main: {
+                repeat: 9,
+                width: 2,
+                height: 18,
+                marge: 0,
+                color: 'grey'
+            },
+            second: {
+                repeat: 0
+            },
+            angle: {
+                start: 60,
+                end: 120   
+            },
+            unit: {
+                repeat: 0   
+            }
+        });
+        
+        var main = new Gauge('.main', {
             width: 500, 
             height: 500, 
             pointer: { width: 16, height: 200 }, 
@@ -55,7 +120,7 @@
             }
         });
 
-        var second = new Gauge(document.querySelector('.second'), {
+        var second = new Gauge('.second', {
             width: 170,
             height: 170,
             pointer: { width: 5, height: 65, color: 'none' },
@@ -85,7 +150,9 @@
     //            max: 7
     //        },
             output: {
-                min: 60,
+                width: 200,
+            height: 200,
+min: 60,
                 max: 120
             }
         });

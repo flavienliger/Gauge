@@ -34,14 +34,14 @@
 
             inp = {
                 actual: typeof oInp.start === 'undefined'? oInp.min||0: oInp.start,
-                min: oInp.min||0,
-                max: oInp.max||100
+                min: pF(oInp.min)||0,
+                max: pF(oInp.max)||100
             };
             
             out = {
                 actual: typeof oOut.start === 'undefined'? oOut.min||0: oOut.start,
-                min: oOut.min||0,
-                max: oOut.max||360
+                min: pF(oOut.min)||0,
+                max: pF(oOut.max)||360
             };
             
             out.min += 90;
@@ -50,7 +50,7 @@
             
             option = {
                 inf: opt.inf||false, // not work
-                speed: opt.speed||0.1
+                speed: pF(opt.speed)||0.1
             };
             
             $obj = getObj(obj);
@@ -230,19 +230,19 @@
 
             // def option
             option = {
-                width: parseFloat(opt.width)||100,
-                height: parseFloat(opt.height)||100,
+                width: pF(opt.width)||pF(opt.height)||100,
+                height: pF(opt.height)||pF(opt.width)||100,
                 pointer: {
                     origin: opt.pointer.origin||'bottom',
                     originX: 'bottom',
                     originY: 'center',
-                    width: parseFloat(oPointer.width)||2,
-                    height: parseFloat(oPointer.height)||40,
+                    width: pF(oPointer.width)||2,
+                    height: pF(oPointer.height)||40,
                     color: oPointer.color||'white'
                 },
                 pivot: {
-                    width: parseFloat(oPivot.width)||10,
-                    height: parseFloat(oPivot.height)||10,
+                    width: pF(oPivot.width)||10,
+                    height: pF(oPivot.height)||10,
                     color: oPivot.color||'white'
                 }
             };
@@ -309,6 +309,167 @@
             }
             return pointer;
         };
+    };
+    
+    var Measure = window.Measure = function(obj, opt){
+    
+        var $obj
+            , $can
+            , ctx
+            , option
+        ;
+        
+        var _construct = function(obj, opt){
+            
+            var opt = opt||{};
+            opt.main = opt.main||{};
+            opt.second = opt.second||{};
+            opt.angle = opt.angle||{};
+            opt.unit = opt.unit||{};
+            
+            option = {
+                width: pF(opt.width)||pF(opt.height)||200,
+                height: pF(opt.height)||pF(opt.width)||200,
+                main: {
+                    repeat: typeof opt.main.repeat !== 'undefined'? parseInt(opt.main.repeat): 9,
+                    width: pF(opt.main.width)||3,
+                    height: pF(opt.main.height)||20,
+                    marge: pF(opt.main.marge)||0,
+                    color: opt.main.color||'white'
+                },
+                second: {
+                    repeat: typeof opt.second.repeat !== 'undefined'? parseInt(opt.second.repeat): 9,
+                    width: pF(opt.second.width)||1,
+                    height: pF(opt.second.height)||10,
+                    marge: pF(opt.second.marge)||0,
+                    color: opt.second.color||'grey'
+                },
+                angle: {
+                    start: pF(opt.angle.start)||0,
+                    end: pF(opt.angle.end)||360
+                },
+                unit: {
+                    min: typeof opt.unit.min !== 'undefined'? pF(opt.unit.min):0,
+                    max: typeof opt.unit.max !== 'undefined'? pF(opt.unit.max):10,
+                    repeat: typeof opt.unit.repeat !== 'undefined'? parseInt(opt.unit.repeat): 9,
+                    font: 'arial',
+                    size: pF(opt.unit.size)||12
+                }
+            };
+            
+            $obj = getObj(obj);
+            $can = document.createElement('canvas');
+            $can.width = option.width;
+            $can.height = option.height;
+            $obj.appendChild($can);
+            
+            ctx = $can.getContext('2d');
+            
+            drawMeasure();
+            
+            if(option.unit.repeat > 0)
+                drawUnit();
+        };
+        
+        var drawLine = function(x, y, w, h, c){
+            ctx.beginPath();
+            ctx.strokeStyle = 
+            ctx.moveTo(x, y);
+            ctx.lineTo(x, y+h);
+            
+            ctx.lineWidth = w;
+            ctx.strokeStyle = c;
+            ctx.stroke();
+        };
+        
+        var degreeToRadian = function(deg){
+            return deg*Math.PI/180;  
+        };
+        
+        var drawUnit = function(){
+            
+            var parent = document.createElement('div');
+            parent.style.position = 'absolute';
+            parent.style.width = option.width+'px';
+            parent.style.height = option.height+'px';
+            parent.style.top = 0;
+            parent.style.left = 0;
+            parent.style.color = 'white';
+            
+            var start = option.angle.start+180;
+            var child;
+            var rangeAngle = option.angle.start - option.angle.end;
+            var angle = Math.abs(rangeAngle/(option.main.repeat-1));
+            
+            for(var i=0; i<option.unit.repeat; i++){
+                child = document.createElement('p');
+                child.style.position = 'absolute';
+                child.style.margin = 0;
+                child.style.left = (option.width/2 * Math.cos(degreeToRadian(start)) + option.width/2) + 'px';
+                child.style.top =  (option.height/2 * Math.sin(degreeToRadian(start)) + option.height/2) + 'px';
+                
+                child.innerHTML = 'TEST';
+                
+                parent.appendChild(child);
+                start += angle;
+            }
+            
+            $obj.appendChild(parent);
+        };
+        
+        var drawMeasure = function(){
+            
+            var center = {
+                x: option.width/2,
+                y: option.height/2
+            };
+            ctx.translate(center.x, center.y);
+            
+            var rangeAngle = option.angle.start - option.angle.end;
+            var angle = Math.abs(rangeAngle/(option.main.repeat-1));
+            var hasSecond = option.second.repeat > 0;
+            
+            if(hasSecond)
+                angle = Math.abs(angle/(option.second.repeat+1));
+            
+            var x, y;
+            for(x=0; x<option.main.repeat; x++){
+                
+                // first line
+                drawLine(
+                    0, 
+                    -center.y+option.main.marge, 
+                    option.main.width, 
+                    option.main.height, 
+                    option.main.color
+                );
+                
+                // second line
+                if(hasSecond && x+1<option.main.repeat){
+                    ctx.rotate(degreeToRadian(angle));
+                    
+                    for(y=0; y<option.second.repeat; y++){
+                        drawLine(
+                            0, 
+                            -center.y+option.second.marge, 
+                            option.second.width, 
+                            option.second.height, 
+                            option.second.color
+                        );
+                        
+                        ctx.rotate(degreeToRadian(angle));
+                    }
+                }
+                else{
+                    ctx.rotate(degreeToRadian(angle));
+                }
+            }
+            
+            if(option.angle.start != 90)
+                $can.style.transform = 'rotate('+(option.angle.start-90)+'deg)';
+        };
+        
+         _construct.apply(this, arguments);
     };
     
 })();

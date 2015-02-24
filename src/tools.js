@@ -141,3 +141,7 @@ var getObj = function(inp){
 var hasStyle = function(obj, property){
     return window.getComputedStyle(obj, null).getPropertyValue(property);  
 };
+
+var pF = function(val){
+    return parseFloat(val);
+};
