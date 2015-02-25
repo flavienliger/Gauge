@@ -130,12 +130,18 @@ Create basic Gauge :
         width
         height
         
+        // angle degree
+        angle: {
+            start
+            end
+        }
+        
         // principal line
         main: {
             repeat
             width
             height
-            marge: offset
+            marge: offset from the edge
             color
         }
 
@@ -144,18 +150,19 @@ Create basic Gauge :
             repeat
             width
             height
-            marge
+            marge: offset from the edge
             color
         }
         
         // text unit
         unit: {
             repeat
-            start
-            end
-            size
-            radius
-            color
+            start: start unit
+            end: end unit
+            font: font-family
+            size: font-size
+            radius: radius from center
+            color: font color
         }
     }
     ```
@@ -199,7 +206,7 @@ Create basic Gauge :
 
 ## Half and Full gauge
 
-- Half gauge
+- Half gauge (Measure doesn't work)
  
     ![Half Gauge] (https://github.com/flavienliger/Gauge/raw/master/images/half.jpg)
 
