@@ -7,7 +7,7 @@
      */
     var Pointer = window.Pointer = function(obj, opt){
         
-        var inp
+        var   inp
             , out
             , option
             , $obj
@@ -23,6 +23,7 @@
             var angle = convert.getOutput(val);
             
             $obj.style.transform = 'rotate('+angle+'deg)';
+            $obj.style.WebkitTransform = 'rotate('+angle+'deg)';
             out.actual = angle;
         };
         
@@ -66,6 +67,7 @@
             
             $obj.offsetHeight;
             $obj.style.transition = 'transform '+option.speed+'s linear';
+            $obj.style.WebkitTransition = 'all '+option.speed+'s linear';
         };
         
         _construct.apply(this, arguments);
@@ -85,6 +87,13 @@
             setTransform(act);
             inp.actual = act;
         };
+        
+        this.getOption = function(){
+            var opt = option;
+            opt.out = out;
+            opt.inp = inp;
+            return opt;
+        };
     };
     
     /**
@@ -101,6 +110,7 @@
             , isArrow
             , isHalf
             , pointer
+            , measure
         ;
         
         var css = {
@@ -125,18 +135,38 @@
             }
         };
         
+        // make arrow by canvas - not used
+        var makeArrow = function(){
+            
+            var $can = document.createElement('canvas');
+            $can.width = option.pointer.width;
+            $can.height = option.pointer.height;
+            $pointer.appendChild($can);
+            
+            var ctx = $can.getContext('2d');
+            ctx.translate(0.1,0.1)
+            ctx.beginPath();
+            ctx.moveTo(option.pointer.width/2, option.pointer.height);
+            ctx.lineTo(0, 0);
+            ctx.lineTo(option.pointer.width, 0);
+            ctx.fillStyle = 'white';
+            ctx.fill();
+        };
+        
         var generateCss = function(){
             
             // base CSS
             var clockCss = css.clock = {
                 width: option.width,
                 height: option.height,
-                borderRadius: option.width+'px'
+                borderRadius: option.width+'px',
+                position: $obj.style.position && $obj.style.position!=='static'? $obj.style.position:'relative'
             };
-
+            
             var pointerCss = css.pointer = {
                 position: 'absolute',
                 transformOrigin: option.pointer.originX+' '+option.pointer.originY,
+                WebkitTransformOrigin: option.pointer.originX+' '+option.pointer.originY,
                 width: isArrow? 0: option.pointer.width,
                 height: isArrow? 0: option.pointer.height,
                 left: '50%',
@@ -172,8 +202,10 @@
             if(isArrow){
                 pointerCss.background = 'none';
                 pointerCss.borderTop = option.pointer.height+'px solid '+option.pointer.color;
-                pointerCss.borderLeft = option.pointer.width+'px solid transparent';
-                pointerCss.borderRight = option.pointer.width+'px solid transparent';
+                pointerCss.borderLeft = option.pointer.width+'px inset rgba(0,0,0,0)';
+                pointerCss.borderRight = option.pointer.width+'px inset rgba(0,0,0,0)';
+                // fix firefox aliasing
+                pointerCss.outline = '1px solid transparent';
             }
 
             // define borderRadius
@@ -309,8 +341,34 @@
             }
             return pointer;
         };
+        
+        this.setMeasure = function(opt){
+            if(!measure){
+                
+                var mOption = opt||{};
+                mOption.width = option.width;
+                mOption.height = option.height;
+                
+                if(pointer){
+                    var pOption = pointer.getOption();
+                    
+                    mOption.angle = {
+                        start: pOption.out.min-90,
+                        end: pOption.out.max-90
+                    };
+                }
+                
+                measure = new Measure($obj, mOption);
+            }
+            return measure;
+        };
     };
     
+    /**
+     * Display measure
+     * @param {String|jQuery|DomObject} obj - pointer object
+     * @param {Object.<pointer, pivot>} opt
+     */
     var Measure = window.Measure = function(obj, opt){
     
         var $obj
@@ -353,7 +411,9 @@
                     end: typeof opt.unit.end !== 'undefined'? pF(opt.unit.end):10,
                     repeat: typeof opt.unit.repeat !== 'undefined'? parseInt(opt.unit.repeat): 9,
                     font: 'arial',
-                    size: pF(opt.unit.size)||12
+                    color: opt.unit.color||'white',
+                    size: pF(opt.unit.size)||12,
+                    radius: opt.unit.radius||100
                 }
             };
             
@@ -371,6 +431,14 @@
                 drawUnit();
         };
         
+        /**
+         * draw line
+         * @param { Number } x - coord x
+         * @param { Number } y - coord y
+         * @param { Number } w - width
+         * @param { Number } h - height
+         * @param { Number } c - color
+         */
         var drawLine = function(x, y, w, h, c){
             ctx.beginPath();
             ctx.strokeStyle = 
@@ -382,42 +450,56 @@
             ctx.stroke();
         };
         
-        var degreeToRadian = function(deg){
-            return deg*Math.PI/180;  
-        };
-        
+        // draw text
         var drawUnit = function(){
             
             var parent = document.createElement('div');
-            parent.style.position = 'absolute';
-            parent.style.width = option.width+'px';
-            parent.style.height = option.height+'px';
-            parent.style.top = 0;
-            parent.style.left = 0;
-            parent.style.color = 'white';
+            
+            var unit = option.unit;
+            var parentStyle = {
+                position: 'absolute',
+                textAlign: 'center',
+                color: unit.color,
+                width: option.width,
+                height: option.height,
+                fontSize: unit.size,
+                fontFamily: unit.font,
+                top: 0,
+                left: 0
+            };
+            applyCss(parent, parentStyle);
             
             var child;
+            var childStyle = {
+                position: 'absolute',
+                margin: 0,
+            };
             
+            // angle calc
             var startAngle = option.angle.start+180;
             var rangeAngle = Math.abs(option.angle.start - option.angle.end);
             var repeat = option.unit.repeat + (rangeAngle == 360? 0: -1);
             var angle = rangeAngle/repeat;
             
+            // incr unit
             var startUnit = option.unit.start;
             var rangeUnit = Math.abs(option.unit.start - option.unit.end);
             var unit = rangeUnit/(option.unit.repeat-1);
             
             for(var i=0; i<option.unit.repeat; i++){
                 child = document.createElement('p');
-                child.style.position = 'absolute';
-                child.style.margin = 0;
-                child.style.fontSize = option.unit.size;
-                child.style.left = (option.width/2 * Math.cos(degreeToRadian(startAngle)) + option.width/2) + 'px';
-                child.style.top =  (option.height/2 * Math.sin(degreeToRadian(startAngle)) + option.height/2) + 'px';
+                
+                childStyle.width = option.unit.size*2;
+                childStyle.left = (option.unit.radius * Math.cos(degreeToRadian(startAngle)) 
+                                    + option.width/2 - option.unit.size);
+                childStyle.top =  (option.unit.radius * Math.sin(degreeToRadian(startAngle)) 
+                                    + option.height/2 - option.unit.size/2);
+                
+                applyCss(child, childStyle);
                 
                 child.innerHTML = startUnit;
                 startUnit += (roundNumber(unit, 3)*(option.unit.start>option.unit.end?-1:1));
-                console.log('angle', startAngle, Math.cos(degreeToRadian(startAngle)), Math.sin(degreeToRadian(startAngle)));
+                
                 parent.appendChild(child);
                 startAngle += angle;
             }
@@ -425,6 +507,7 @@
             $obj.appendChild(parent);
         };
         
+        // draw line
         var drawMeasure = function(){
             
             var center = {
@@ -473,8 +556,10 @@
                 }
             }
             
-            if(option.angle.start != 90)
+            if(option.angle.start != 90){
                 $can.style.transform = 'rotate('+(option.angle.start-90)+'deg)';
+                $can.style.WebkitTransform = 'rotate('+(option.angle.start-90)+'deg)';
+            }
         };
         
          _construct.apply(this, arguments);

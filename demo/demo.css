@@ -57,3 +57,7 @@ body {
     left: 278px;
     z-index: 1;
 }
+
+div p{
+    font-weight: bold;   
+}

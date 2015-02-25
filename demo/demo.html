@@ -37,94 +37,45 @@
     
     <script>
         
-        new Measure('.main', {
-            width: 500,
-            height: 500,
-            main: {
-                repeat: 7,
-                width: 5,
-                marge: 30
-            },
-            second: {
-                repeat: 9,
-                width: 2,
-                marge: 40
-            },
-            angle: {
-                start: -20,
-                end: 200
-            },
-            unit: {
-                repeat: 7,
-                start: 15,
-                end: -15
-            }
-        });
-        
-        new Measure('.second', {
-            width: 170,
-            height: 170,
-            main: {
-                repeat: 9,
-                width: 3,
-                height: 12,
-                marge: 10
-            },
-            second: {
-                repeat: 9,
-                width: 1,
-                height: 8,
-                marge: 10
-            },
-            angle: {
-                start: 90,
-                end: 450
-            },
-            unit: {
-                repeat: 4,
-                start: 0,
-                end: 270
-            }
-        });
-        
-        new Measure('.third', {
-            width: 200,
-            height: 200,
-            main: {
-                repeat: 9,
-                width: 2,
-                height: 18,
-                marge: 0,
-                color: 'grey'
-            },
-            second: {
-                repeat: 0
-            },
-            angle: {
-                start: 60,
-                end: 120   
-            },
-            unit: {
-                repeat: 0   
-            }
-        });
-        
         var main = new Gauge('.main', {
             width: 500, 
             height: 500, 
             pointer: { width: 16, height: 200 }, 
             pivot: { width: 40, height: 40 }
-        })
-        .setPointer({
+        });
+        
+        mainPointer = main.setPointer({
             speed: 0.5,
-    //        input: {
-    //            min: 15,
-    //            max: -15,
-    //            start: 15
-    //        },
+            input: {
+                min: 15,
+                max: -15,
+                start: 0
+            },
             output: {
                 min: -20,
                 max: 200
+            }
+        });
+        
+        main.setMeasure({
+            main: {
+                repeat: 7,
+                width: 5,
+                height: 25,
+                marge: 40
+            },
+            second: {
+                repeat: 9,
+                width: 4,
+                height: 15,
+                marge: 50
+            },
+            unit: {
+                repeat: 7,
+                start: 15,
+                end: -15,
+                size: 26,
+                radius: 230
             }
         });
 
@@ -134,15 +85,38 @@
             pointer: { width: 5, height: 65, color: 'none' },
             pivot: { width: 12, height: 12 }
         })
-         .setPointer({
+        
+        var secondPointer = second.setPointer({
             speed: 2,
-    //        input: {
-    //            min: 0,
-    //            max: 270
-    //        },
+            input: {
+                min: 0,
+                max: 360
+            },
             output: {
                 min: 90,
-                max: 360
+                max: 450
+            }
+        });
+        
+        second.setMeasure({
+            main: {
+                repeat: 9,
+                width: 4,
+                height: 15,
+                marge: 0
+            },
+            second: {
+                repeat: 6,
+                width: 3,
+                height: 8,
+                marge: 0
+            },
+            unit: {
+                repeat: 4,
+                start: 0,
+                end: 270,
+                radius: 50,
+                size: 23
             }
         });
 
@@ -152,16 +126,31 @@
             pointer: { width: 2, height: 75 },
             pivot: { width: 8, height: 8 }
         })
-         .setPointer({
-    //        input: {
-    //            min: 0,
-    //            max: 7
-    //        },
+        
+        var thirdPointer = third.setPointer({
+            input: {
+                min: 0,
+                max: 9
+            },
             output: {
-                width: 200,
-            height: 200,
-min: 60,
+                min: 60,
                 max: 120
+            }
+        });
+        
+        third.setMeasure({
+            main: {
+                repeat: 9,
+                width: 2.5,
+                height: 18,
+                color: '#dedede',
+                marge: 0,
+            },
+            second: {
+                repeat: 0
+            },
+            unit: {
+                repeat: 0   
             }
         });
         
@@ -169,18 +158,18 @@ min: 60,
             return Math.floor(nMin + (nMax+1-nMin)*Math.random());
         };
         
-        var setRandom = function(obj){
-            obj.update(random(0,100));
+        var setRandom = function(obj, opt){
+            obj.update(random(opt.min,opt.max));
 
             setTimeout(function(){
-                setRandom(obj);
+                setRandom(obj, opt);
             }, random(500,1000));
         };
 
         var setInc = function(obj, prev){
-            var prev = (typeof prev === 'undefined' || prev>100 || prev<0) ? 0: prev;
+            var prev = (typeof prev === 'undefined' || prev>15 || prev<-15) ? 0: prev;
             var sens = random(0,1)==0?1:-1;
-            prev += random(0,10)*sens;
+            prev += random(0,5)*sens;
 
             obj.update(prev);
 
@@ -190,9 +179,9 @@ min: 60,
         };
 
         // random animation
-        setRandom(second);
-        setRandom(third);
-        setInc(main);
+        setRandom(secondPointer, {min: 0, max: 360 });
+        setRandom(thirdPointer, {min: 0, max: 7 });
+        setInc(mainPointer);
     </script>
 </body>
 </html>

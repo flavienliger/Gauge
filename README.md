@@ -55,6 +55,25 @@ Create basic Gauge :
     });
     ```
     
+- JS - add measure
+    ```js
+    var myMeasure = myGauge.setMeasure({
+        main: {
+            repeat: 13,
+            width: 3
+        },
+        second: {
+            repeat: 5
+        },
+        unit: {
+            repeat: 13,
+            start: 1,
+            end: 13,
+            size: 20
+        }
+    });
+    ```
+    
 - JS - update pointer
     ```js
     // value = input min/max
@@ -76,6 +95,7 @@ Create basic Gauge :
             color
         }
         
+        // circle in center
         pivot: {
             width
             height
@@ -89,15 +109,53 @@ Create basic Gauge :
     {
         speed: transition in second (default 0.1)
         
-        inp: {
+        // you're input value
+        inpupt: {
             start
             min
             max
         }
         
+        // angle degree
         output: {
             min
             max
+        }
+    }
+    ```
+
+- Measure
+    ```
+    { 
+        width
+        height
+        
+        // principal line
+        main: {
+            repeat
+            width
+            height
+            marge: offset
+            color
+        }
+
+        // second between principal
+        second: {
+            repeat
+            width
+            height
+            marge
+            color
+        }
+        
+        // text unit
+        unit: {
+            repeat
+            start
+            end
+            size
+            radius
+            color
         }
     }
     ```
@@ -118,7 +176,14 @@ Create basic Gauge :
     // update
     ptr.update(valInput);
     ```
-    
+
+- Measure
+   ```js
+    var measure = new Measure(obj, option);
+    // equivalent
+    var measure = myGauge.setMeasure(option);
+    ``` 
+
 - "obj" possibility :
     ```js
     // String
@@ -233,5 +298,5 @@ Create basic Gauge :
     
 # TODO
 
-- Make graduation, actualy used background image.
+- Aliasing in Safari / Firefox
 - Gauge infinite, transition 360° -> 0°

@@ -14,7 +14,7 @@ body {
 .half-clock {
     background: #282828;
     border: 2px solid #7e7e7e;
-    position: absolute;
+    position: absolute !important;
 }
 
 .full-clock {
@@ -48,4 +48,9 @@ body {
     margin-top: -55px;
     left: 50%;
     margin-left: -50px;
+}
+
+
+.pointer {
+    outline: 1px solid transparent;
 }

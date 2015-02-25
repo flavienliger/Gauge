@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Clock</title>
+    <meta name="viewport" content="initial-scale=0.5, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="clock.css">
+</head>
+<body>
+    <div class="content">
+        <div id="left" class="myGauge">
+            <div class="pointer arrow"></div>
+            <div class="pivot"></div>
+        </div>
+    </div>
+    
+    <script src="../src/gauge.js"></script>
+    <script src="../src/tools.js"></script>
+    
+    <script>
+        var myGauge = new Gauge('.myGauge', {
+            width: 300, 
+            height: 300, 
+            pointer: {
+                width: 5, 
+                height: 60 
+            }, 
+            pivot: { 
+                width: 15, 
+                height: 15 
+            }
+        });
+        
+        var myPointer = myGauge.setPointer({
+            input: {
+                min: 0,
+                max: 12
+            },
+            output: {
+                min: 90,
+                max: 450
+            }
+        });
+        
+        var measure = myGauge.setMeasure({
+            main: {
+                repeat: 13,
+                width: 2.5,
+                height: 18,
+                color: '#dedede',
+                marge: 0,
+            },
+            second: {
+                repeat: 4
+            },
+            unit: {
+                repeat: 12,
+                start: 1,
+                end: 12,
+                size: 20,
+                radius: 120
+            }
+        });
+    </script>
+</body>
+</html>

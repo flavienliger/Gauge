@@ -101,7 +101,7 @@ var random = function(nMin,nMax){
  */
 var applyCss = function(obj, css){
     
-    var px = ['borderRadius', 'margin', 'marginLeft', 'marginRight', 'marginTop', 'marginBottom', 'left', 'top', 'right', 'bottom', 'width', 'height'];
+    var px = ['borderRadius', 'margin', 'marginLeft', 'marginRight', 'marginTop', 'marginBottom', 'left', 'top', 'right', 'bottom', 'width', 'height', 'fontSize'];
     
     var addUnit = function(key, val){
         if(!String(val).match(/\D+$/)){
@@ -157,4 +157,8 @@ var hasStyle = function(obj, property){
 
 var pF = function(val){
     return parseFloat(val);
+};
+
+var degreeToRadian = function(deg){
+    return deg*Math.PI/180;  
 };
